@@ -34,14 +34,15 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Build project
-      run: |
-        dotnet build
-        if "%ERRORLEVEL%"=="0" (
-          echo "Build succeeded."
-        ) else (
-          echo "Build failed."
-          exit 1
-        )
+        shell: pwsh
+        run: |
+          dotnet build
+          if ($LASTEXITCODE -eq 0) {
+            Write-Output "Build succeeded."
+          } else {
+            Write-Error "Build failed."
+            exit 1
+          }
 
     - name: Merge to Dev
       if: success() && startsWith(github.ref, 'refs/heads/features/')
