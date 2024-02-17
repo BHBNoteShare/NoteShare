@@ -14,44 +14,40 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     env:
       Solution_Name: NoteShare.sln
 
     steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - name: Cache dependencies
-      uses: actions/cache@v2
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-dotnet-
-
-    - name: Install .NET Core
+    - name: Install .NET Core SDK
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
 
-    - name: Install Mono
-      run: |
-        sudo apt update
-        sudo apt install mono-devel -y
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Build and merge to Dev
+    - name: Build project
       run: |
         dotnet build
         if [ $? -eq 0 ]; then
-          git config --global user.name 'Kornél Hajtó'
-          git config --global user.email 'kornelhajto2004@gmail.com'
-          git checkout dev
-          git merge ${{ github.ref }}
-          git push origin dev
+          echo "Build succeeded."
         else
-          echo "Build failed, skipping merge to dev."
+          echo "Build failed."
+          exit 1  # Exit with non-zero code to indicate failure
         fi
+
+    - name: Merge to Dev
+      if: success() && startsWith(github.ref, 'refs/heads/features/')
+      run: |
+        git config --global user.name 'Kornél Hajtó'
+        git config --global user.email 'kornelhajto2004@gmail.com'
+        git checkout dev
+        git merge ${{ github.ref }}
+        git push origin dev
