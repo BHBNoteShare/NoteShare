@@ -36,7 +36,7 @@ jobs:
     - name: Build project
       run: |
         dotnet build
-        if %ERRORLEVEL% EQU 0 (
+        if "%ERRORLEVEL%"=="0" (
           echo "Build succeeded."
         ) else (
           echo "Build failed."
