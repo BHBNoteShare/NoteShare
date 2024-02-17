@@ -7,9 +7,7 @@ on:
     branches: [ "dev" ]
 
 jobs:
-
   build:
-
     strategy:
       matrix:
         configuration: [Debug, Release]
@@ -20,35 +18,34 @@ jobs:
       Solution_Name: NoteShare.sln
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Install .NET Core SDK
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 8.0.x
+      - name: Install .NET Core SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.0.2
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Build project
-        shell: pwsh
+      - name: Build project
         run: |
           dotnet build
-          if ($LASTEXITCODE -eq 0) {
-            Write-Output "Build succeeded."
-          } else {
-            Write-Error "Build failed."
+          if %ERRORLEVEL% EQU 0 (
+            echo "Build succeeded."
+          ) else (
+            echo "Build failed."
             exit 1
-          }
+          )
 
-    - name: Merge to Dev
-      if: success() && startsWith(github.ref, 'refs/heads/features/')
-      run: |
-        git config --global user.name 'Kornél Hajtó'
-        git config --global user.email 'kornelhajto2004@gmail.com'
-        git checkout dev
-        git merge ${{ github.ref }}
-        git push origin dev
+      - name: Merge to Dev
+        if: success() && startsWith(github.ref, 'refs/heads/features/')
+        run: |
+          git config --global user.name 'Kornél Hajtó'
+          git config --global user.email 'kornelhajto2004@gmail.com'
+          git checkout dev
+          git merge ${{ github.ref }}
+          git push origin dev
