@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.API", "NoteShare.API\NoteShare.API.csproj", "{FDEA1DF5-6CC1-43CB-8D43-F872B9ED6A4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.API", "NoteShare.API\NoteShare.API.csproj", "{FDEA1DF5-6CC1-43CB-8D43-F872B9ED6A4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.CL", "NoteShare.CL\NoteShare.CL.csproj", "{B8346D3C-A5D7-4963-A5E8-78060CD6F3C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.CL", "NoteShare.CL\NoteShare.CL.csproj", "{B8346D3C-A5D7-4963-A5E8-78060CD6F3C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.Data", "NoteShare.Data\NoteShare.Data.csproj", "{A9548CB2-AC4A-4234-AE94-63C7A27AF0F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.Core", "NoteShare.Core\NoteShare.Core.csproj", "{65880C23-80BD-4E8B-B068-FBC0953EF031}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.Models", "NoteShare.Models\NoteShare.Models.csproj", "{150A6F17-4CF4-4688-928D-7C3649383F91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +29,18 @@ Global
 		{B8346D3C-A5D7-4963-A5E8-78060CD6F3C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8346D3C-A5D7-4963-A5E8-78060CD6F3C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8346D3C-A5D7-4963-A5E8-78060CD6F3C1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A9548CB2-AC4A-4234-AE94-63C7A27AF0F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9548CB2-AC4A-4234-AE94-63C7A27AF0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9548CB2-AC4A-4234-AE94-63C7A27AF0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9548CB2-AC4A-4234-AE94-63C7A27AF0F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65880C23-80BD-4E8B-B068-FBC0953EF031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65880C23-80BD-4E8B-B068-FBC0953EF031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65880C23-80BD-4E8B-B068-FBC0953EF031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65880C23-80BD-4E8B-B068-FBC0953EF031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{150A6F17-4CF4-4688-928D-7C3649383F91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{150A6F17-4CF4-4688-928D-7C3649383F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{150A6F17-4CF4-4688-928D-7C3649383F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{150A6F17-4CF4-4688-928D-7C3649383F91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
