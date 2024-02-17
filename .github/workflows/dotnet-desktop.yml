@@ -36,12 +36,12 @@ jobs:
     - name: Build project
       run: |
         dotnet build
-        if [ $? -eq 0 ]; then
+        if %ERRORLEVEL% EQU 0 (
           echo "Build succeeded."
-        else
+        ) else (
           echo "Build failed."
-          exit 1  # Exit with non-zero code to indicate failure
-        fi
+          exit 1
+        )
 
     - name: Merge to Dev
       if: success() && startsWith(github.ref, 'refs/heads/features/')
