@@ -36,27 +36,21 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Execute build
-      run: dotnet build
-
-  merge_to_dev:
-    name: Merge to Dev
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Merge to Dev
-        if: success() && startsWith(github.ref, 'refs/heads/features/')
-        run: |
+    - name: Execute build and merge to Dev
+      if: success()
+      run: |
+        dotnet build
+        if [ $? -eq 0 ]; then
           git config --global user.name 'Kornél Hajtó'
           git config --global user.email 'kornelhajto2004@gmail.com'
           git checkout dev
           git merge ${{ github.ref }}
           git push origin dev
+        else
+          echo "Build failed, skipping merge to dev."
+        fi
