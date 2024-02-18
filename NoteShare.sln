@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.API", "NoteShare.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.CL", "NoteShare.CL\NoteShare.CL.csproj", "{B8346D3C-A5D7-4963-A5E8-78060CD6F3C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.Data", "NoteShare.Data\NoteShare.Data.csproj", "{A9548CB2-AC4A-4234-AE94-63C7A27AF0F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.Data", "NoteShare.Data\NoteShare.Data.csproj", "{A9548CB2-AC4A-4234-AE94-63C7A27AF0F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.Core", "NoteShare.Core\NoteShare.Core.csproj", "{65880C23-80BD-4E8B-B068-FBC0953EF031}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.Core", "NoteShare.Core\NoteShare.Core.csproj", "{65880C23-80BD-4E8B-B068-FBC0953EF031}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.Models", "NoteShare.Models\NoteShare.Models.csproj", "{150A6F17-4CF4-4688-928D-7C3649383F91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.Models", "NoteShare.Models\NoteShare.Models.csproj", "{150A6F17-4CF4-4688-928D-7C3649383F91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.Testing", "NoteShare.Testing\NoteShare.Testing.csproj", "{3328C5F9-8C76-495D-B418-A8BD4D0F790C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{150A6F17-4CF4-4688-928D-7C3649383F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{150A6F17-4CF4-4688-928D-7C3649383F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{150A6F17-4CF4-4688-928D-7C3649383F91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3328C5F9-8C76-495D-B418-A8BD4D0F790C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3328C5F9-8C76-495D-B418-A8BD4D0F790C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3328C5F9-8C76-495D-B418-A8BD4D0F790C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3328C5F9-8C76-495D-B418-A8BD4D0F790C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
