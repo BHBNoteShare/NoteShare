@@ -68,4 +68,6 @@
       <ProjectReference Include="..\NoteShare.Models\NoteShare.Models.csproj" />
     </ItemGroup>
 
+    <ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionNoteShareCLHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+
 </Project>

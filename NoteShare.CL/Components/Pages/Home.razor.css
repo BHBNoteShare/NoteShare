@@ -1,0 +1,171 @@
+﻿
+.outer-div {
+    position: fixed;
+    transform: translateX(-50%);
+    left: 50%;
+    height: 500px;
+    width: 350px;
+    margin-top: 100px;
+    text-align: center;
+    background-color: #F1FAFF;
+    border-radius: 50px;
+}
+
+.inner-div {
+    width: 100%;
+    font-size: 2rem;
+    display: inline-block;
+    margin: auto;
+    color: #004AAD;
+    
+}
+
+
+h1 {
+    font-size: 50px;
+    position: relative;
+    transform: translateY(-50%);
+    font-family: "Candal", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    text-shadow: 4px 4px 4px #5e8fd1;
+}
+
+
+.input-container :first {
+    margin-top: 20%;
+}
+
+.input-container {
+    position: relative;
+    width: 75%; /* Adjust width as needed */
+    height: 5%;
+     margin-bottom: 5%;
+    /* Adjust margin as needed */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+input {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 20px;
+    background-color: transparent;
+    height: 6%; /* Adjust height as needed */
+    font-size: 1rem;
+    text-indent: 3%;
+    vertical-align: middle;
+}
+
+input:focus {
+    outline: none;
+}
+
+.input-container .background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #004AAD;
+    background-color: #CADEF2;
+    z-index: -1;
+    border-radius: 20px;
+}
+
+.label {
+    position: absolute;
+    top: 0;
+    left: 10%;
+}
+
+.label .text {
+    text-align: center;
+    transform: translateY(-50%);
+    font-size: 1rem;
+}
+
+.label_background {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #CADEF2;
+    width: 125%;
+    height: 10%;
+}
+
+a {
+    position: relative; /* Change to relative positioning */
+    font-size: 0.6rem;
+    width: 100%;
+    height: 10%;
+    top: 35%; /* Adjust as needed */
+    left: 0;
+}
+
+.forgotten {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    position: relative; /* Change to relative positioning */
+    height: 5%;
+    width: 100%;
+    margin-bottom: 3%; /* Adjust as needed */
+}
+
+.loginButton {
+    position: relative;
+    font-size: 1rem;
+    border: none;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 25px;
+    width: 40%;
+    height: 70px;
+    background-color: #004AAD;
+    color: white;
+}
+
+.line {
+    position: absolute;
+    margin-top: 10%;
+    width: 80%;
+    height: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    background-color: #80b1f2;
+}
+
+.registration {
+    position: absolute;
+    font-size: 0.6rem;
+    width: 100%;
+    height: 10%;
+    top: 75%; /* Adjust as needed */
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.e-input-eye {
+    position: absolute;
+    width: 20%;
+    top: 50%; /* Align vertically to the middle */
+    left: 80%; /* Adjust as needed */
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 15px;
+}
+
+    .e-input-eye i {
+        font-size: 18px;
+        line-height: 1;
+        color: #333;
+        transition: color 0.3s ease-in-out;
+        margin-bottom: 20px;
+    }
+
+
+::-ms-reveal {
+    display: none;
+}
