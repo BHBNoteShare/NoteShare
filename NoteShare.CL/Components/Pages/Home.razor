@@ -13,8 +13,9 @@
         </div>
         <div class="input-container">
             <div class="background"></div>
-            <input type="password" id="passwordInput" />
-         <div class="label">
+            <input type="@txtType" id="passwordInput" />
+            <span class="e-input-eye fas fa-eye" @onclick="ShowPassword"><i class=""></i></span>
+            <div class="label">
                 <div class="label_background"></div>
                 <div class="text">Jelszó</div>
          </div>
@@ -24,5 +25,24 @@
         </div>
         <button class="loginButton">Bejelentkezés</button>
         <div class="line"></div>
+        <div class="registration">
+            <p>Még nincs fiókod? <a href="/registration">Regisztráció</a></p>
+        </div>
     </div>
 </div>
+
+@code{
+    public string txtType = "password";
+
+    void ShowPassword()
+    {
+        if (this.txtType == "password")
+        {
+            this.txtType = "text";
+        }
+        else
+        {
+            this.txtType = "password";
+        }
+    }
+}
