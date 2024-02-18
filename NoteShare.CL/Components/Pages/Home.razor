@@ -1,5 +1,28 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+<div class="outer-div">
+    <div class="inner-div">
+        <h1>NoteShare</h1>
+        <div class="input-container">
+            <div class="background"></div>
+            <input type="email" id="emailInput" />
+           <div class="label">
+               <div class="label_background"></div>
+               <div class="text">Email</div>
+               </div>
+        </div>
+        <div class="input-container">
+            <div class="background"></div>
+            <input type="password" id="passwordInput" />
+         <div class="label">
+                <div class="label_background"></div>
+                <div class="text">Jelszó</div>
+         </div>
+        </div>
+        <div class="forgotten">
+            <a href="/forgotten">Elfelejtett jelszó</a>
+        </div>
+        <button class="loginButton">Bejelentkezés</button>
+        <div class="line"></div>
+    </div>
+</div>
