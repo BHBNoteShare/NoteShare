@@ -9,8 +9,8 @@ namespace NoteShare.Core.Services
     public interface IGenericRepository<TEntity> where TEntity : class
     {
         IQueryable<TEntity> GetAsQueryable();
-        Task<TEntity> GetAsync(string id);
-        Task<TResult> GetAsync<TResult>(string id);
+        Task<TEntity> GetByIdAsync(string id);
+        Task<TResult> GetByIdAsync<TResult>(string id);
         Task<List<TEntity>> GetAllAsync();
         Task<List<TResult>> GetAllAsync<TResult>();
         Task<PagedResult<TResult>> GetAllAsync<TResult>(QueryParameters queryParameters);
@@ -59,13 +59,13 @@ namespace NoteShare.Core.Services
 
         public async Task DeleteAsync(string id)
         {
-            var entity = await GetAsync(id) ?? throw new NullReferenceException("Entity not found");
+            var entity = await GetByIdAsync(id) ?? throw new NullReferenceException("Entity not found");
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
         }
         public async Task<TEntity> DeleteSoftAsync(string id)
         {
-            var entity = await GetAsync(id);
+            var entity = await GetByIdAsync(id);
             entity.Deleted = true;
             await UpdateAsync(entity);
             return entity;
@@ -73,7 +73,7 @@ namespace NoteShare.Core.Services
 
         public async Task<bool> Exists(string id)
         {
-            var entity = await GetAsync(id);
+            var entity = await GetByIdAsync(id);
             return entity != null;
         }
 
@@ -105,12 +105,12 @@ namespace NoteShare.Core.Services
             };
         }
 
-        public async Task<TEntity?> GetAsync(string id)
+        public async Task<TEntity?> GetByIdAsync(string id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TResult> GetAsync<TResult>(string id)
+        public async Task<TResult> GetByIdAsync<TResult>(string id)
         {
             var result = await _context.Set<TEntity>().FindAsync(id) ?? throw new NullReferenceException("Entity not found");
             return _mapper.Map<TResult>(result);
@@ -129,7 +129,7 @@ namespace NoteShare.Core.Services
                 throw new Exception("Invalid Id used in request");
             }
 
-            var entity = await GetAsync(id) ?? throw new NullReferenceException("Entity not found");
+            var entity = await GetByIdAsync(id) ?? throw new NullReferenceException("Entity not found");
             _mapper.Map(source, entity);
             _context.Update(entity);
             await _context.SaveChangesAsync();
