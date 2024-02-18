@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NoteShare.Data\NoteShare.Data.csproj" />
-    <ProjectReference Include="..\NoteShare.Models\NoteShare.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
