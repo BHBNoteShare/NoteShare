@@ -41,6 +41,9 @@ jobs:
             exit 1
           }
 
+      - name: Test project
+        run: dotnet test
+
       - name: Merge to Dev
         if: success() && startsWith(github.ref, 'refs/heads/features/')
         run: |
