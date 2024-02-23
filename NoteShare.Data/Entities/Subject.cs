@@ -3,9 +3,8 @@
 namespace NoteShare.Data.Entities
 {
     [Table("Subjects")]
-    public class Subject
+    public class Subject : AbstractEntity
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public SubjectLevel Level { get; set; }
     }

@@ -9,8 +9,6 @@ namespace NoteShare.Data.Entities
     {
         public string OM { get; set; }
         public string Name { get; set; }
-        public string Tasks { get; set; }
-        public string Address { get; set; }
     }
 
     public class SchoolConfiguration : IEntityTypeConfiguration<School>

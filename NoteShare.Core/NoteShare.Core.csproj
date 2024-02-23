@@ -14,8 +14,4 @@
     <ProjectReference Include="..\NoteShare.Data\NoteShare.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Init\" />
-  </ItemGroup>
-
 </Project>
