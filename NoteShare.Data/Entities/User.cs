@@ -38,7 +38,7 @@ namespace NoteShare.Data.Entities
 
     public class Teacher : User
     {
-        public IList<Subject> Subjects { get; set; } = new List<Subject>();
+        public IList<TeacherSubject> Subjects { get; set; } = new List<TeacherSubject>();
 
         public string SchoolId { get; set; }
         public School School { get; set; }
@@ -62,6 +62,8 @@ namespace NoteShare.Data.Entities
     {
         public string SchoolId { get; set; }
         public School School { get; set; }
+
+        public IList<StudentPreference> Preferences { get; set; } = new List<StudentPreference>();
 
         override public UserType UserType => UserType.Student;
     }
