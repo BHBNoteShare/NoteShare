@@ -101,7 +101,7 @@ namespace NoteShare.Core.Services
             {
                 Items = items,
                 PageNumber = queryParameters.PageNumber,
-                RecordNumber = queryParameters.PageSize
+                PageSize = queryParameters.PageSize
             };
         }
 

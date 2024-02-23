@@ -19,7 +19,7 @@ namespace NoteShare.Core.Services.Init
         {
             foreach (var subject in subjects)
             {
-                if (!await _unitOfWork.GetDbSet<Subject>().AnyAsync(s=>s.Name.Equals(subject.Name) && s.Level.Equals(subject.Level)))
+                if (!await _unitOfWork.GetDbSet<Subject>().AnyAsync(s=>s.Name.Equals(subject.Name)))
                 {
                     await _unitOfWork.GetRepository<Subject>().AddAsync(subject);
                 }

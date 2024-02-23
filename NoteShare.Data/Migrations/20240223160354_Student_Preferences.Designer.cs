@@ -11,7 +11,7 @@ using NoteShare.Data;
 namespace NoteShare.Data.Migrations
 {
     [DbContext(typeof(NoteShareDbContext))]
-    [Migration("20240223140741_Student_Preferences")]
+    [Migration("20240223160354_Student_Preferences")]
     partial class Student_Preferences
     {
         /// <inheritdoc />
@@ -54,6 +54,9 @@ namespace NoteShare.Data.Migrations
                     b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
                     b.HasKey("PreferenceId", "StudentId");
 
                     b.HasIndex("StudentId");
@@ -69,9 +72,6 @@ namespace NoteShare.Data.Migrations
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

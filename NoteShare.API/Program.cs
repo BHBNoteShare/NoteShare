@@ -53,9 +53,11 @@ namespace NoteShare.API
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IStudentPreferenceService, StudentPreferenceService>();
+
             builder.Services.AddScoped<SubjectsInit>();
             builder.Services.AddScoped<SchoolsInit>();
-
+            #region Swagger
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -91,7 +93,7 @@ namespace NoteShare.API
                     }
                 });
             });
-
+            #endregion
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -102,8 +104,8 @@ namespace NoteShare.API
             
             using (var scope = app.Services.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
-                scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
+                //scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
+                //scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
             }
             
             app.UseCors(options =>

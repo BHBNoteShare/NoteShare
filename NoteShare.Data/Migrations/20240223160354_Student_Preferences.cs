@@ -19,6 +19,10 @@ namespace NoteShare.Data.Migrations
                 table: "Subjects");
 
             migrationBuilder.DropColumn(
+                name: "Level",
+                table: "Subjects");
+
+            migrationBuilder.DropColumn(
                 name: "TeacherId",
                 table: "Subjects");
 
@@ -27,7 +31,8 @@ namespace NoteShare.Data.Migrations
                 columns: table => new
                 {
                     PreferenceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,6 +94,13 @@ namespace NoteShare.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "TeacherSubjects");
+
+            migrationBuilder.AddColumn<int>(
+                name: "Level",
+                table: "Subjects",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<string>(
                 name: "TeacherId",

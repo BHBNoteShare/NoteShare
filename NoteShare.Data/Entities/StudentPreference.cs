@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NoteShare.Models.StudentPreferences;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NoteShare.Data.Entities
@@ -9,6 +10,7 @@ namespace NoteShare.Data.Entities
     {
         public string PreferenceId { get; set; }
         public Subject Preference { get; set; }
+        public SubjectLevel Level { get; set; }
         public string StudentId { get; set; }
         public Student Student { get; set; }
     }
