@@ -1,10 +1,14 @@
 using AutoWrapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NoteShare.API.Middlewares;
+using NoteShare.Core;
 using NoteShare.Core.Services;
+using NoteShare.Core.Services.Init;
 using NoteShare.Data;
 
 namespace NoteShare.API
@@ -15,13 +19,18 @@ namespace NoteShare.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("NoteShareConfig.json", optional: false, reloadOnChange: true)
+            .Build();
+
             // Add services to the container.
             builder.Services.AddDbContext<NoteShareDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
                 options.EnableSensitiveDataLogging(true);
             });
-
+            builder.Services.Configure<NoteShareConfig>(configuration.GetSection("NoteShareConfig"));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddCors();
@@ -44,6 +53,8 @@ namespace NoteShare.API
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<SubjectsInit>();
+            builder.Services.AddScoped<SchoolsInit>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -88,12 +99,13 @@ namespace NoteShare.API
                 var ctx = scope.ServiceProvider.GetRequiredService<NoteShareDbContext>();
                 ctx.Database.Migrate();
             }
-            /*
+            
             using (var scope = app.Services.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<InitService>().Setup().Wait();
+                scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
+                scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
             }
-            */
+            
             app.UseCors(options =>
             {
                 options.AllowAnyMethod();

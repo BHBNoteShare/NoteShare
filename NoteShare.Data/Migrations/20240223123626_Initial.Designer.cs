@@ -11,7 +11,7 @@ using NoteShare.Data;
 namespace NoteShare.Data.Migrations
 {
     [DbContext(typeof(NoteShareDbContext))]
-    [Migration("20240218131918_Initial")]
+    [Migration("20240223123626_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -30,10 +30,6 @@ namespace NoteShare.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
@@ -45,10 +41,6 @@ namespace NoteShare.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tasks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Schools");
@@ -57,7 +49,11 @@ namespace NoteShare.Data.Migrations
             modelBuilder.Entity("NoteShare.Data.Entities.Subject", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Level")
                         .HasColumnType("int");
