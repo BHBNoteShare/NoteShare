@@ -26,20 +26,5 @@ namespace NoteShare.Core.Extensions
             };
             return pagedResult;
         }
-
-        public static PagedResult<TDestination> MapPagedResult<TSource, TDestination>(PagedResult<TSource> source, IMapper mapper)
-        {
-            var destinationItems = mapper.Map<List<TDestination>>(source.Items);
-            var pagedResultDestination = new PagedResult<TDestination>
-            {
-                Items = destinationItems,
-                ItemCount = source.ItemCount,
-                PageCount = source.PageCount,
-                PageNumber = source.PageNumber,
-                PageSize = source.PageSize
-            };
-
-            return pagedResultDestination;
-        }
     }
 }

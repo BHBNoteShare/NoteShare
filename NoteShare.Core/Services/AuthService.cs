@@ -17,6 +17,9 @@ namespace NoteShare.Core.Services
         Task Register(RegisterDto registerDto);
         Task<AuthResponseDto> Login(LoginDto loginDto);
         Task<User?> GetUser();
+        Task<Student?> GetStudent();
+        Task<Teacher?> GetTeacher();
+        Task<Parent?> GetParent();
     }
 
     public class AuthService : IAuthService
@@ -147,6 +150,36 @@ namespace NoteShare.Core.Services
                 return null;
             }
             return user;
+        }
+
+        public async Task<Student?> GetStudent()
+        {
+            var user = await GetUser();
+            if (user == null)
+            {
+                return null;
+            }
+            return await _unitOfWork.GetRepository<Student>().GetByIdAsync(user.Id);
+        }
+
+        public async Task<Teacher?> GetTeacher()
+        {
+            var user = await GetUser();
+            if (user == null)
+            {
+                return null;
+            }
+            return await _unitOfWork.GetRepository<Teacher>().GetByIdAsync(user.Id);
+        }
+
+        public async Task<Parent?> GetParent()
+        {
+            var user = await GetUser();
+            if (user == null)
+            {
+                return null;
+            }
+            return await _unitOfWork.GetRepository<Parent>().GetByIdAsync(user.Id);
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

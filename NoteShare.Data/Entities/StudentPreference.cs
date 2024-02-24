@@ -19,7 +19,7 @@ namespace NoteShare.Data.Entities
     {
         public void Configure(EntityTypeBuilder<StudentPreference> builder)
         {
-            builder.HasKey(sp => new { sp.PreferenceId, sp.StudentId });
+            builder.HasKey(sp => new { sp.PreferenceId, sp.StudentId, sp.Level });
         }
     }
 }

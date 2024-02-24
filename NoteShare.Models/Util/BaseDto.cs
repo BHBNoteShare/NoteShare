@@ -1,6 +1,6 @@
-﻿namespace NoteShare.Models.StudentPreferences
+﻿namespace NoteShare.Models.Util
 {
-    public class SubjectDto
+    public class BaseDto
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -54,6 +54,8 @@ namespace NoteShare.API
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IStudentPreferenceService, StudentPreferenceService>();
+            builder.Services.AddScoped<ISubjectService, SubjectService>();
+            builder.Services.AddScoped<ISchoolService, SchoolService>();
 
             builder.Services.AddScoped<SubjectsInit>();
             builder.Services.AddScoped<SchoolsInit>();
@@ -101,13 +103,13 @@ namespace NoteShare.API
                 var ctx = scope.ServiceProvider.GetRequiredService<NoteShareDbContext>();
                 ctx.Database.Migrate();
             }
-            
+
             using (var scope = app.Services.CreateScope())
             {
-                //scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
-                //scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
+                scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
+                scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
             }
-            
+
             app.UseCors(options =>
             {
                 options.AllowAnyMethod();

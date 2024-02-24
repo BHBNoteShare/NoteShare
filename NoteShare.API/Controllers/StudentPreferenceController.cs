@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NoteShare.Core.Extensions;
 using NoteShare.Core.Services;
-using NoteShare.Data.Entities;
 using NoteShare.Models;
 using NoteShare.Models.StudentPreferences;
 
@@ -25,13 +22,47 @@ namespace NoteShare.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Route("subjects")]
-        public async Task<IActionResult> GetSubjects([FromQuery] QueryParameters queryParameters)
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<StudentPreferenceDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> AddStudentPreferences([FromBody] List<StudentPreferenceDto> studentPreferencesDto)
         {
-            var result = await _studentPreferenceService.GetSubjects(queryParameters);
+            var studentPreferences = await _studentPreferenceService.AddStudentPreferences(studentPreferencesDto);
+            var mapped = _mapper.Map<PagedResult<StudentPreferenceDto>>(studentPreferences);
+            return Ok(mapped);
+        }
 
-            var mapped = PaggingExtension.MapPagedResult<Subject, SubjectDto>(result, _mapper);
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<StudentPreferenceDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdateStudentPreferences([FromBody] List<StudentPreferenceDto> studentPreferencesDto)
+        {
+            var studentPreferences = await _studentPreferenceService.UpdateStudentPreferences(studentPreferencesDto);
+            var mapped = _mapper.Map<PagedResult<StudentPreferenceDto>>(studentPreferences);
+            return Ok(mapped);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<StudentPreferenceDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> DeleteStudentPreferences([FromBody] List<StudentPreferenceDto> studentPreferencesDto)
+        {
+            var studentPreferences = await _studentPreferenceService.DeleteStudentPreferences(studentPreferencesDto);
+            var mapped = _mapper.Map<PagedResult<StudentPreferenceDto>>(studentPreferences);
+            return Ok(mapped);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<StudentPreferenceDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetStudentPreferences()
+        {
+            var studentPreferences = await _studentPreferenceService.GetStudentPreferences();
+            var mapped = _mapper.Map<PagedResult<StudentPreferenceDto>>(studentPreferences);
             return Ok(mapped);
         }
     }

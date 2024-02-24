@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using NoteShare.Data.Entities;
 using NoteShare.Models.Auth;
+using NoteShare.Models.School;
 using NoteShare.Models.StudentPreferences;
+using NoteShare.Models.Subject;
 
 namespace NoteShare.Core.MapperConfigs
 {
@@ -10,6 +12,7 @@ namespace NoteShare.Core.MapperConfigs
         public StudentPreferenceMapperConfig()
         {
             CreateMap<SubjectDto, Subject>().ReverseMap();
+            CreateMap<SchoolDto, School>().ReverseMap();
             CreateMap<StudentPreferenceDto, StudentPreference>()
                 .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.SubjectLevel))
                 .ReverseMap()
