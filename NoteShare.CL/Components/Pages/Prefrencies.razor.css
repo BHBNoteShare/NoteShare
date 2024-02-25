@@ -1,0 +1,193 @@
+
+.outer-div {
+    position: fixed;
+    transform: translateX(-50%);
+    left: 50%;
+    height: 600px;
+    width: 350px;
+    margin-top: 30px;
+    text-align: center;
+    background-color: #F1FAFF;
+    border-radius: 50px;
+}
+
+.inner-div {
+    width: 100%;
+    font-size: 2rem;
+    display: inline-block;
+    margin: auto;
+    color: #004AAD;
+}
+
+h1 {
+    font-size: 33px;
+    position: relative;
+    transform: translateY(-50%);
+    font-family: "Candal", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    text-shadow: 4px 4px 4px #5e8fd1;
+    color: #004AAD;
+}
+
+.search-bar input {
+    position: relative;
+    float: right;
+    vertical-align: middle;
+    height: 35px;
+    width: 275px;
+    margin-right: 20px;
+    margin-top: 8px;
+    background-color: transparent;
+    font-size: 1rem;
+    text-indent: 3%;
+    border: none;
+    border-radius: 8px;
+}
+
+input:focus {
+    outline: none;
+}
+
+.background {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    z-index: -1;
+    border-radius: 10px;
+}
+
+label{
+    height: 20px;
+}
+
+.line {
+    position: absolute;
+    margin-top: 2px;
+    width: 90%;
+    height: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    background-color: #004AAD;
+}
+
+.content-container{
+
+}
+
+.search-bar{
+
+}
+
+
+/*Further button*/
+.button-container {
+    height: 100px;
+    width: 100%;
+    position: relative;
+    transform: translateX(20%);
+    vertical-align: middle;
+}
+
+.save-btn {
+    position: relative;
+    font-size: 1rem;
+    border: none;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 15px;
+    width: 40%;
+    height: 50px;
+    background-color: #004AAD;
+    color: white;
+    transform: translateX(-50%);
+    margin-top: 10px;
+}
+
+/*Scrollable list content*/
+div.list {
+    margin-top: 10px;
+    margin: 15px;
+    padding: 5px;
+    position: relative;
+    width: 90%;
+    font-size: 20px;
+    height: 400px;
+    overflow: auto;
+    text-align: justify;
+    float: right;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F1FAFF;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c9ddf1;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #004AAD;
+}
+
+/*Checkboxes*/
+.checkbox-style {
+    height: 40px;
+}
+
+.checkbox-label {
+    font-size: 15px;
+    width: 260px;
+    text-align: left;
+}
+
+.list-item {
+    float: left;
+    width: 100%;
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.list-item input {
+    position: absolute;
+    opacity:10%;
+    top: 6px;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #F1FAFF;
+    border: 2px solid #004AAD;
+    accent-color: #004AAD;
+}
+
+.list-item input:checked{
+    accent-color: #004AAD;
+    opacity:100%;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #F1FAFF;
+    border: 2px solid #004AAD;
+    border-radius: 4px;
+}
+
+

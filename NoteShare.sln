@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.Core", "NoteShare
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.Models", "NoteShare.Models\NoteShare.Models.csproj", "{150A6F17-4CF4-4688-928D-7C3649383F91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteShare.Testing", "NoteShare.Testing\NoteShare.Testing.csproj", "{3328C5F9-8C76-495D-B418-A8BD4D0F790C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteShare.Testing", "NoteShare.Testing\NoteShare.Testing.csproj", "{3328C5F9-8C76-495D-B418-A8BD4D0F790C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,46 @@
+@page "/preferencies"
+
+
+<div class="outer-div">
+	<div class="header">
+		<h1>Érettségi tárgyak</h1>
+	</div>
+	<div class="inner-div">
+		<div class="content-container">
+			<div class="search-bar">
+				<div class="input-container">
+					<div class="background"></div>
+					<label><span class="fa-solid fa-magnifying-glass"></span></label>
+					<input class="search-input" type="text" name="name" value="" />
+					<div class="line"></div>
+				</div>
+			</div>
+			<div class="list">
+				
+				@for(int i= 0; i<targyak.Length; i++)
+				{
+					<div class="list-item">
+						<span class="checkmark"></span>
+						<input type="checkbox" class="checkbox-style" /> <label class="checkbox-label">
+							@Targy(i)
+						</label>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="button-container">
+		<button class="save-btn">Mentés</button>
+    </div>
+</div>
+
+
+
+@code {
+	string[] targyak = { "Magyar nyelv és irodalom", "Matematika", "Biológia", "Fizika", "Földrajz" };
+
+	private string Targy(int a)
+	{
+		return targyak[a];
+	}
+}
