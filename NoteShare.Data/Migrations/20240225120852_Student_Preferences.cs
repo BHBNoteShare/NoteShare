@@ -31,12 +31,12 @@ namespace NoteShare.Data.Migrations
                 columns: table => new
                 {
                     PreferenceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Level = table.Column<int>(type: "int", nullable: false)
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudentPreferences", x => new { x.PreferenceId, x.StudentId });
+                    table.PrimaryKey("PK_StudentPreferences", x => new { x.PreferenceId, x.StudentId, x.Level });
                     table.ForeignKey(
                         name: "FK_StudentPreferences_Subjects_PreferenceId",
                         column: x => x.PreferenceId,

@@ -9,7 +9,6 @@ namespace NoteShare.Core.Services
     public interface IStudentPreferenceService
     {
         Task<PagedResult<StudentPreference>> AddStudentPreferences(List<StudentPreferenceDto> studentPreferences);
-        Task<PagedResult<StudentPreference>> UpdateStudentPreferences(List<StudentPreferenceDto> studentPreferences);
         Task<PagedResult<StudentPreference>> DeleteStudentPreferences(List<StudentPreferenceDto> studentPreferences);
         Task<PagedResult<StudentPreference>> GetStudentPreferences();
     }
@@ -31,28 +30,6 @@ namespace NoteShare.Core.Services
             foreach (var studentPreferenceDto in studentPreferences)
             {
                 await AddStudentPreference(studentPreferenceDto, student.Id);
-            }
-            return await GetStudentPreferences();
-        }
-
-        public async Task<PagedResult<StudentPreference>> UpdateStudentPreferences(List<StudentPreferenceDto> studentPreferences)
-        {
-            var student = await _authService.GetUser() ?? throw new Exception("Nem található a diák");
-            foreach (var studentPreferenceDto in studentPreferences)
-            {
-                var studentPreference = await GetStudentPreference(studentPreferenceDto, student.Id);
-                if (studentPreference == null)
-                {
-                    await AddStudentPreference(studentPreferenceDto, student.Id);
-                }
-                else
-                {
-                    studentPreference.Level = studentPreferenceDto.SubjectLevel;
-                    studentPreference.PreferenceId = studentPreferenceDto.SubjectId;
-
-                    _unitOfWork.Context().Set<StudentPreference>().Update(studentPreference);
-                    await _unitOfWork.SaveChangesAsync();
-                }
             }
             return await GetStudentPreferences();
         }
@@ -80,7 +57,7 @@ namespace NoteShare.Core.Services
 
         public async Task AddStudentPreference(StudentPreferenceDto studentPreferenceDto, string studentId)
         {
-            if (!await ExistsStudentPreference(studentPreferenceDto, studentId))
+            if (await ExistsStudentPreference(studentPreferenceDto, studentId))
             {
                 throw new Exception($"A diák már hozzáadta ezt a tantárgyat({studentPreferenceDto.SubjectId})");
             }

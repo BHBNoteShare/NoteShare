@@ -15,8 +15,10 @@ namespace NoteShare.Core.MapperConfigs
             CreateMap<SchoolDto, School>().ReverseMap();
             CreateMap<StudentPreferenceDto, StudentPreference>()
                 .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.SubjectLevel))
+                .ForMember(dest => dest.PreferenceId, opt => opt.MapFrom(src => src.SubjectId))
                 .ReverseMap()
-                .ForMember(dest => dest.SubjectLevel, opt => opt.MapFrom(src => src.Level));
+                .ForMember(dest => dest.SubjectLevel, opt => opt.MapFrom(src => src.Level))
+                .ForMember(dest => dest.SubjectId, opt => opt.MapFrom(src => src.PreferenceId));
         }
     }
 }

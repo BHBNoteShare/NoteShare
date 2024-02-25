@@ -48,7 +48,7 @@ namespace NoteShare.Core.Services
             {
                 case UserType.Teacher:
                     var teacher = _mapper.Map<Teacher>(registerDto);
-                    if (!await _unitOfWork.GetRepository<Student>().Exists(teacher.SchoolId))
+                    if (!await _unitOfWork.GetRepository<School>().Exists(teacher.SchoolId))
                     {
                         throw new Exception("Az iskola nem található");
                     }
@@ -56,7 +56,7 @@ namespace NoteShare.Core.Services
                     break;
                 case UserType.Student:
                     var student = _mapper.Map<Student>(registerDto);
-                    if (!await _unitOfWork.GetRepository<Student>().Exists(student.SchoolId))
+                    if (!await _unitOfWork.GetRepository<School>().Exists(student.SchoolId))
                     {
                         throw new Exception("Az iskola nem található");
                     }
@@ -81,19 +81,18 @@ namespace NoteShare.Core.Services
             {
                 throw new Exception($"A felhasználó nem található");
             }
-            var token = await GenerateToken(user);
 
             return new AuthResponseDto
             {
-                Token = token,
+                Token = GenerateToken(user),
                 UserName = user.UserName,
                 UserType = user.UserType
             };
         }
 
-        private async Task<string> GenerateToken(User user)
+        private string GenerateToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new Exception("A kulcs nem található")));
 
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 

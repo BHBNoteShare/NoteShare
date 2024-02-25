@@ -54,7 +54,7 @@ namespace NoteShare.Data.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.HasKey("PreferenceId", "StudentId");
+                    b.HasKey("PreferenceId", "StudentId", "Level");
 
                     b.HasIndex("StudentId");
 

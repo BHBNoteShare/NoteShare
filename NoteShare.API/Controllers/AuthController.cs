@@ -20,7 +20,7 @@ namespace NoteShare.API.Controllers
         [Route("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> FoodWasteReducerUserRegister([FromBody] RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             await _authService.Register(registerDto);
             return Ok();

@@ -33,17 +33,6 @@ namespace NoteShare.API.Controllers
             return Ok(mapped);
         }
 
-        [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<StudentPreferenceDto>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateStudentPreferences([FromBody] List<StudentPreferenceDto> studentPreferencesDto)
-        {
-            var studentPreferences = await _studentPreferenceService.UpdateStudentPreferences(studentPreferencesDto);
-            var mapped = _mapper.Map<PagedResult<StudentPreferenceDto>>(studentPreferences);
-            return Ok(mapped);
-        }
-
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<StudentPreferenceDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
