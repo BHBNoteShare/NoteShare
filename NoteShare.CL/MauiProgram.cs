@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using NoteShare.CL.Services;
 
 namespace NoteShare.CL
 {
@@ -15,6 +16,7 @@ namespace NoteShare.CL
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddSingleton<IAuthService, AuthService>();
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();

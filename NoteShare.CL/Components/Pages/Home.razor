@@ -1,11 +1,14 @@
 ﻿@page "/"
+@using NoteShare.CL.Services
+@using NoteShare.Models.Auth
+@inject IAuthService AuthService
 
 <div class="outer-div">
     <div class="inner-div">
         <h1>NoteShare</h1>
         <div class="input-container">
             <div class="background"></div>
-            <input type="email" id="emailInput" />
+            <input type="email" id="emailInput" @bind="@email" />
            <div class="label">
                <div class="label_background"></div>
                <div class="text">Email</div>
@@ -13,7 +16,7 @@
         </div>
         <div class="input-container">
             <div class="background"></div>
-            <input type="@txtType" id="passwordInput" />
+            <input type="@txtType" id="passwordInput" @bind="@password" />
             <span class="e-input-eye fas fa-eye" @onclick="ShowPassword"><i class=""></i></span>
             <div class="label">
                 <div class="label_background"></div>
@@ -23,7 +26,7 @@
         <div class="forgotten">
             <a href="/forgotten">Elfelejtett jelszó</a>
         </div>
-        <button class="loginButton">Bejelentkezés</button>
+        <button class="loginButton" @onclick="Login">Bejelentkezés</button>
         <div class="line"></div>
         <div class="registration">
             <p>Még nincs fiókod? <a href="/registration">Regisztráció</a></p>
@@ -33,6 +36,9 @@
 
 @code{
     public string txtType = "password";
+    private string password = "";
+    private string email = "";
+    private string message = "";
 
     void ShowPassword()
     {
@@ -44,5 +50,16 @@
         {
             this.txtType = "password";
         }
+    }
+
+    private void Login()
+    {
+        LoginDto ldto = new LoginDto
+        {
+            Email = email,
+            Password = password
+        };
+        AuthService.Login(ldto);
+       
     }
 }
