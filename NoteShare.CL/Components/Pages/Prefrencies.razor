@@ -11,36 +11,77 @@
 				<div class="input-container">
 					<div class="background"></div>
 					<label><span class="fa-solid fa-magnifying-glass"></span></label>
-					<input class="search-input" type="text" name="name" value="" />
+					<input class="search-input" type="text" placeholder="Keresés..." @oninput="searchBoxChanged"/>
 					<div class="line"></div>
 				</div>
 			</div>
 			<div class="list">
 				
-				@for(int i= 0; i<targyak.Length; i++)
+				@foreach (string subject in subjectList)
 				{
-					<div class="list-item">
-						<span class="checkmark"></span>
-						<input type="checkbox" class="checkbox-style" /> <label class="checkbox-label">
-							@Targy(i)
-						</label>
-					</div>
+					@if (subject.ToLower().Contains(valueInput.ToLower()))
+					{
+						<div class="list-item">
+							<span class="checkmark"></span>
+						@if (checkedSubjects.Contains(subject))
+						{
+								<input type="checkbox" class="checkbox-style" @onclick="() => checkedAdd(subject)" checked />
+						}else{
+								<input type="checkbox" class="checkbox-style" @onclick="() => checkedAdd(subject)" />
+						}
+						
+							 <label class="checkbox-label">
+								@subject
+							</label>
+						</div>
+					}
 				}
 			</div>
 		</div>
 	</div>
 	<div class="button-container">
-		<button class="save-btn">Mentés</button>
+		<button class="save-btn" @onclick="listAdd">Mentés</button>
     </div>
 </div>
 
 
 
 @code {
-	string[] targyak = { "Magyar nyelv és irodalom", "Matematika", "Biológia", "Fizika", "Földrajz" };
+	string[] targyak = { "Magyar nyelv és irodalom", "Matematika", "Biológia", "Fizika", "Földrajz", "Testnevelés", "Angol nyelv", "Német nyelv", "Informatika", "Természettudomány" };
+	public List<string> subjectList = new List<string>();
+	public List<string> checkedSubjects = new List<string>();
+	public string searchInput = "";
+	public string valueInput = "";
 
-	private string Targy(int a)
+	protected override void OnInitialized()
 	{
-		return targyak[a];
+		foreach (string targy in targyak)
+		{
+			subjectList.Add(targy);
+		}
 	}
+
+	private async Task searchBoxChanged(ChangeEventArgs e)
+	{
+		valueInput = e.Value.ToString();
+	}
+
+	private void listAdd()
+	{
+		subjectList.Add(searchInput);
+	}
+
+	private void checkedAdd(string subject)
+	{
+		if (checkedSubjects.Contains(subject))
+		{
+			checkedSubjects.Remove(subject);
+		}
+		else
+		{
+			checkedSubjects.Add(subject);
+		}
+	}
+
+
 }
