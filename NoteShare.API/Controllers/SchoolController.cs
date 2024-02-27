@@ -21,7 +21,7 @@ namespace NoteShare.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<SchoolDto>))]
-        public async Task<IActionResult> GetSchools([FromQuery] QueryParameters queryParameters)
+        public async Task<IActionResult> GetSchools([FromQuery] SearchQueryParameters queryParameters)
         {
             var subjects = await _schoolService.GetSchools(queryParameters);
             var mapped = _mapper.Map<PagedResult<SchoolDto>>(subjects);

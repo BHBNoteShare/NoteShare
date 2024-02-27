@@ -1,12 +1,13 @@
 ﻿using NoteShare.Core.Extensions;
 using NoteShare.Data.Entities;
 using NoteShare.Models;
+using NoteShare.Models.Subject;
 
 namespace NoteShare.Core.Services
 {
     public interface ISubjectService
     {
-        Task<PagedResult<Subject>> GetSubjects(QueryParameters queryParameters);
+        Task<PagedResult<Subject>> GetSubjects(SearchQueryParameters queryParameters);
     }
 
     public class SubjectService : ISubjectService
@@ -17,10 +18,14 @@ namespace NoteShare.Core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PagedResult<Subject>> GetSubjects(QueryParameters queryParameters)
+        public async Task<PagedResult<Subject>> GetSubjects(SearchQueryParameters queryParameters)
         {
             var subjects = _unitOfWork.GetRepository<Subject>().GetAsQueryable();
-            return await subjects.GetPagedResult();
+            if (!string.IsNullOrEmpty(queryParameters.SearchText))
+            {
+                subjects = subjects.Where(s => s.Name.Contains(queryParameters.SearchText));
+            }
+            return await subjects.GetPagedResult(queryParameters.PageNumber, queryParameters.PageSize);
         }
     }
 }

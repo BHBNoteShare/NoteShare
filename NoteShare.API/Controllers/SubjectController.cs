@@ -24,7 +24,7 @@ namespace NoteShare.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<SubjectDto>))]
-        public async Task<IActionResult> GetSubjects([FromQuery] QueryParameters queryParameters)
+        public async Task<IActionResult> GetSubjects([FromQuery] SearchQueryParameters queryParameters)
         {
             var result = await _subjectService.GetSubjects(queryParameters);
             var mapped = _mapper.Map<PagedResult<SubjectDto>>(result);

@@ -10,7 +10,7 @@ namespace NoteShare.Core.Services
     {
         Task<PagedResult<StudentPreference>> AddStudentPreferences(List<StudentPreferenceDto> studentPreferences);
         Task<PagedResult<StudentPreference>> DeleteStudentPreferences(List<StudentPreferenceDto> studentPreferences);
-        Task<PagedResult<StudentPreference>> GetStudentPreferences();
+        Task<PagedResult<StudentPreference>> GetStudentPreferences(QueryParameters? queryParameters = null);
     }
 
     public class StudentPreferenceService : IStudentPreferenceService
@@ -49,10 +49,12 @@ namespace NoteShare.Core.Services
             return await GetStudentPreferences();
         }
 
-        public async Task<PagedResult<StudentPreference>> GetStudentPreferences()
+        public async Task<PagedResult<StudentPreference>> GetStudentPreferences(QueryParameters? queryParameters = null)
         {
             var student = await _authService.GetStudent() ?? throw new Exception("Nem található a diák");
-            return await _unitOfWork.Context().Set<StudentPreference>().Where(sp => sp.StudentId == student.Id).GetPagedResult();
+            return await _unitOfWork.Context().Set<StudentPreference>()
+                .Include(sp => sp.Preference)
+                .Where(sp => sp.StudentId == student.Id).GetPagedResult(queryParameters?.PageNumber ?? 1, queryParameters?.PageSize ?? 10);
         }
 
         public async Task AddStudentPreference(StudentPreferenceDto studentPreferenceDto, string studentId)
@@ -60,6 +62,10 @@ namespace NoteShare.Core.Services
             if (await ExistsStudentPreference(studentPreferenceDto, studentId))
             {
                 throw new Exception($"A diák már hozzáadta ezt a tantárgyat({studentPreferenceDto.SubjectId})");
+            }
+            if (!await _unitOfWork.GetRepository<Subject>().Exists(studentPreferenceDto.SubjectId))
+            {
+                throw new Exception($"Nem található a tantárgy({studentPreferenceDto.SubjectId})");
             }
             var studentPreference = new StudentPreference
             {

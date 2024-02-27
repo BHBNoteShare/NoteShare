@@ -18,7 +18,8 @@ namespace NoteShare.Core.MapperConfigs
                 .ForMember(dest => dest.PreferenceId, opt => opt.MapFrom(src => src.SubjectId))
                 .ReverseMap()
                 .ForMember(dest => dest.SubjectLevel, opt => opt.MapFrom(src => src.Level))
-                .ForMember(dest => dest.SubjectId, opt => opt.MapFrom(src => src.PreferenceId));
+                .ForMember(dest => dest.SubjectId, opt => opt.MapFrom(src => src.PreferenceId))
+                .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.Preference.Name));
         }
     }
 }

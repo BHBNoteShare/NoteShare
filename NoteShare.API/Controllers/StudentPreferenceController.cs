@@ -48,9 +48,9 @@ namespace NoteShare.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<StudentPreferenceDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetStudentPreferences()
+        public async Task<IActionResult> GetStudentPreferences([FromQuery] QueryParameters queryParameters)
         {
-            var studentPreferences = await _studentPreferenceService.GetStudentPreferences();
+            var studentPreferences = await _studentPreferenceService.GetStudentPreferences(queryParameters);
             var mapped = _mapper.Map<PagedResult<StudentPreferenceDto>>(studentPreferences);
             return Ok(mapped);
         }
