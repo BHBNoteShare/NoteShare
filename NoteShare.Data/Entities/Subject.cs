@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NoteShare.Data.Entities
 {
@@ -6,12 +8,15 @@ namespace NoteShare.Data.Entities
     public class Subject : AbstractEntity
     {
         public string Name { get; set; }
-        public SubjectLevel Level { get; set; }
+
+        public IList<StudentPreference> Preferences { get; set; } = new List<StudentPreference>();
+        public IList<TeacherSubject> Teachers { get; set; } = new List<TeacherSubject>();
     }
 
-    public enum SubjectLevel
+    public class SubjectConfiguration : IEntityTypeConfiguration<Subject>
     {
-        Mid,
-        High
+        public void Configure(EntityTypeBuilder<Subject> builder)
+        {
+        }
     }
 }

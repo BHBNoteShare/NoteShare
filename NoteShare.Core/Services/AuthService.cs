@@ -17,6 +17,9 @@ namespace NoteShare.Core.Services
         Task Register(RegisterDto registerDto);
         Task<AuthResponseDto> Login(LoginDto loginDto);
         Task<User?> GetUser();
+        Task<Student?> GetStudent();
+        Task<Teacher?> GetTeacher();
+        Task<Parent?> GetParent();
     }
 
     public class AuthService : IAuthService
@@ -45,7 +48,7 @@ namespace NoteShare.Core.Services
             {
                 case UserType.Teacher:
                     var teacher = _mapper.Map<Teacher>(registerDto);
-                    if (!await _unitOfWork.GetRepository<Student>().Exists(teacher.SchoolId))
+                    if (!await _unitOfWork.GetRepository<School>().Exists(teacher.SchoolId))
                     {
                         throw new Exception("Az iskola nem található");
                     }
@@ -53,7 +56,7 @@ namespace NoteShare.Core.Services
                     break;
                 case UserType.Student:
                     var student = _mapper.Map<Student>(registerDto);
-                    if (!await _unitOfWork.GetRepository<Student>().Exists(student.SchoolId))
+                    if (!await _unitOfWork.GetRepository<School>().Exists(student.SchoolId))
                     {
                         throw new Exception("Az iskola nem található");
                     }
@@ -78,19 +81,18 @@ namespace NoteShare.Core.Services
             {
                 throw new Exception($"A felhasználó nem található");
             }
-            var token = await GenerateToken(user);
 
             return new AuthResponseDto
             {
-                Token = token,
+                Token = GenerateToken(user),
                 UserName = user.UserName,
                 UserType = user.UserType
             };
         }
 
-        private async Task<string> GenerateToken(User user)
+        private string GenerateToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new Exception("A kulcs nem található")));
 
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -147,6 +149,36 @@ namespace NoteShare.Core.Services
                 return null;
             }
             return user;
+        }
+
+        public async Task<Student?> GetStudent()
+        {
+            var user = await GetUser();
+            if (user == null)
+            {
+                return null;
+            }
+            return await _unitOfWork.GetRepository<Student>().GetByIdAsync(user.Id);
+        }
+
+        public async Task<Teacher?> GetTeacher()
+        {
+            var user = await GetUser();
+            if (user == null)
+            {
+                return null;
+            }
+            return await _unitOfWork.GetRepository<Teacher>().GetByIdAsync(user.Id);
+        }
+
+        public async Task<Parent?> GetParent()
+        {
+            var user = await GetUser();
+            if (user == null)
+            {
+                return null;
+            }
+            return await _unitOfWork.GetRepository<Parent>().GetByIdAsync(user.Id);
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

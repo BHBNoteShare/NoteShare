@@ -9,7 +9,7 @@ namespace NoteShare.Core.Services
     public interface IGenericRepository<TEntity> where TEntity : class
     {
         IQueryable<TEntity> GetAsQueryable();
-        Task<TEntity> GetByIdAsync(string id);
+        Task<TEntity?> GetByIdAsync(string id);
         Task<TResult> GetByIdAsync<TResult>(string id);
         Task<List<TEntity>> GetAllAsync();
         Task<List<TResult>> GetAllAsync<TResult>();
@@ -28,10 +28,10 @@ namespace NoteShare.Core.Services
         private readonly NoteShareDbContext _context;
         private readonly IMapper _mapper;
         protected readonly DbSet<TEntity> DbSet;
-        public GenericRepository(NoteShareDbContext noteShareDbContext, IMapper _mapper)
+        public GenericRepository(NoteShareDbContext noteShareDbContext, IMapper mapper)
         {
             _context = noteShareDbContext;
-            _mapper = _mapper;
+            _mapper = mapper;
             DbSet = _context.Set<TEntity>();
         }
 
@@ -63,9 +63,10 @@ namespace NoteShare.Core.Services
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
         }
+
         public async Task<TEntity> DeleteSoftAsync(string id)
         {
-            var entity = await GetByIdAsync(id);
+            var entity = await GetByIdAsync(id) ?? throw new NullReferenceException("Entity not found");
             entity.Deleted = true;
             await UpdateAsync(entity);
             return entity;
@@ -101,7 +102,7 @@ namespace NoteShare.Core.Services
             {
                 Items = items,
                 PageNumber = queryParameters.PageNumber,
-                RecordNumber = queryParameters.PageSize
+                PageSize = queryParameters.PageSize
             };
         }
 
