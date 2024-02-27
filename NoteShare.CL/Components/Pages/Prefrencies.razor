@@ -3,36 +3,63 @@
 
 <div class="outer-div">
 	<div class="header">
-		<h1>Érettségi tárgyak</h1>
+		<h1>@title</h1>
 	</div>
 	<div class="inner-div">
 		<div class="content-container">
-			<div class="search-bar">
-				<div class="input-container">
-					<div class="background"></div>
-					<label><span class="fa-solid fa-magnifying-glass"></span></label>
-					<input class="search-input" type="text" placeholder="Keresés..." @oninput="searchBoxChanged"/>
-					<div class="line"></div>
+			@if (enableSearch)
+			{
+				<div class="search-bar">
+					<div class="input-container">
+						<div class="background"></div>
+						<label><span class="fa-solid fa-magnifying-glass"></span></label>
+						<input class="search-input" type="text" placeholder="Keresés..." @oninput="searchBoxChanged" />
+						<div class="line"></div>
+					</div>
 				</div>
-			</div>
+			}
 			<div class="list">
-				
-				@foreach (string subject in subjectList)
+				@if (phase1)
 				{
-					@if (subject.ToLower().Contains(valueInput.ToLower()))
+					@foreach (string subject in subjectList)
 					{
-						<div class="list-item">
-							<span class="checkmark"></span>
-						@if (checkedSubjects.Contains(subject))
+						@if (subject.ToLower().Contains(valueInput.ToLower()))
 						{
-								<input type="checkbox" class="checkbox-style" @onclick="() => checkedAdd(subject)" checked />
-						}else{
-								<input type="checkbox" class="checkbox-style" @onclick="() => checkedAdd(subject)" />
+							<div class="list-item">
+								<span class="checkmark"></span>
+								@if (checkedSubjects.Contains(subject))
+								{
+									<input type="checkbox" class="checkbox-style" @onclick="() => addChecked(subject)" checked />
+								}
+								else
+								{
+									<input type="checkbox" class="checkbox-style" @onclick="() => addChecked(subject)" />
+								}
+
+								<label class="checkbox-label">
+									@subject
+								</label>
+							</div>
 						}
-						
-							 <label class="checkbox-label">
-								@subject
-							</label>
+					}
+				}
+				else
+				{
+					@foreach (string subject in checkedSubjects)
+					{
+						<div class="list-item-2">
+							<h5>@subject</h5>
+							<div class="checkbox-group">
+								@foreach (Level l in subjectLevels)
+								{
+									<div class="checkbox-holder">
+										<span class="checkmark-small"></span>
+										<input type="checkbox" class="checkbox-style-small" @onclick="() => addSubjectLevel(subject, l.subjectLevel)" />
+										<label class="checkbox-label-small">@l.name</label>
+									</div>
+								}
+							</div>
+							<div class="line-small"></div>
 						</div>
 					}
 				}
@@ -40,38 +67,85 @@
 		</div>
 	</div>
 	<div class="button-container">
-		<button class="save-btn" @onclick="listAdd">Mentés</button>
+		<button class="save-btn" @onclick="saveSelected">Mentés</button>
     </div>
 </div>
 
 
 
 @code {
+	public bool enableSearch = true;
+	public bool phase1 = true;
+
+	public string title = "Érettségi tárgyak";
+
+	//ideiglenes -> majd a noteshare.data.subject lesz
+	public class Subject
+	{
+		public string Name;
+		public SubjectLevel Level;
+	}
+
+	//ideiglenes -> majd a noteshare.data.subjectlevel lesz
+	public enum SubjectLevel
+	{
+		Mid,
+		High
+	}
+
+	//masodjara listazashoz: Középszint + mid pl
+	public class Level
+	{
+		public string name;
+		public SubjectLevel subjectLevel;
+	}
+
+
+	//phase 1:
 	string[] targyak = { "Magyar nyelv és irodalom", "Matematika", "Biológia", "Fizika", "Földrajz", "Testnevelés", "Angol nyelv", "Német nyelv", "Informatika", "Természettudomány" };
+	//osszes targyat tartalmazza
 	public List<string> subjectList = new List<string>();
+	//searchable listbol kivalasztott targyak
 	public List<string> checkedSubjects = new List<string>();
+	//keresesi talalatok, back-endbol kapott valaszt ebbe
+	public List<string> searchResults = new List<string>();
 	public string searchInput = "";
 	public string valueInput = "";
 
+	//phase 2:
+	//kivalasztott targyak + szint
+	public List<Subject> selectedSubjects = new List<Subject>();
+	//szintek + neve a generalashoz
+	public List<Level> subjectLevels = new List<Level>();
+
 	protected override void OnInitialized()
 	{
+		//ehelyett majd a db-bol kapott adatokat tolti majd be
 		foreach (string targy in targyak)
 		{
 			subjectList.Add(targy);
 		}
+
+		Level l = new Level();
+		l.name = "Középszint";
+		l.subjectLevel = SubjectLevel.Mid;
+		subjectLevels.Add(l);
+
+		Level l2 = new Level();
+		l2.name = "Emeltszint";
+		l2.subjectLevel = SubjectLevel.High;
+		subjectLevels.Add(l2);
+
 	}
 
+	//phase 1:
 	private async Task searchBoxChanged(ChangeEventArgs e)
 	{
 		valueInput = e.Value.ToString();
 	}
 
-	private void listAdd()
-	{
-		subjectList.Add(searchInput);
-	}
 
-	private void checkedAdd(string subject)
+	private void addChecked(string subject)
 	{
 		if (checkedSubjects.Contains(subject))
 		{
@@ -83,5 +157,54 @@
 		}
 	}
 
+	//transition:
+	private void saveSelected()
+	{
+		if (phase1)
+		{
+			phase1 = false;
+			enableSearch = false;
+			title = "Tárgyak szintje";
+			//átvált a tárgyszintes listára
+		}
+		else
+		{
+			foreach (string name in checkedSubjects)
+			{
+				int i = 0;
+				while(i<selectedSubjects.Count && !selectedSubjects[i].Name.Equals(name))
+				{
+					i++;
+				}
+				if (i >= selectedSubjects.Count)
+				{
+					Subject s = new Subject();
+					s.Name = name;
+					s.Level = SubjectLevel.Mid;
+					selectedSubjects.Add(s);
+				}
+			}
+		}
+	}
 
+	//phase 2:
+	private void addSubjectLevel(string subject, SubjectLevel level)
+	{
+		Subject s = new Subject();
+		s.Name = subject;
+		s.Level = level;
+		int i = 0;
+		while(i<selectedSubjects.Count && !(selectedSubjects[i].Name.Equals(s.Name) && selectedSubjects[i].Level.Equals(s.Level)))
+		{
+			i++;
+		}
+		if (i < selectedSubjects.Count)
+		{
+			selectedSubjects.Remove(selectedSubjects[i]);
+		}
+		else
+		{
+			selectedSubjects.Add(s);
+		}
+	}
 }
