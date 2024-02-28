@@ -1,7 +1,6 @@
-﻿@page "/"
-@using NoteShare.CL.Services
-@using NoteShare.Models.Auth
+﻿@page "/login"
 @inject IAuthService AuthService
+@inject NavigationManager NavigationManager
 
 <div class="outer-div">
     <div class="inner-div">
@@ -39,6 +38,15 @@
     private string password = "";
     private string email = "";
     private string message = "";
+    private string token;
+    protected override async Task OnInitializedAsync()
+    {
+        token = await SecureStorage.GetAsync("token");
+        if(token is not null)
+        {
+            NavigationManager.NavigateTo("/dashboard");
+        }
+    }
 
     void ShowPassword()
     {
@@ -52,14 +60,26 @@
         }
     }
 
-    private void Login()
+    private async Task Login()
     {
         LoginDto ldto = new LoginDto
+            {
+                Email = email,
+                Password = password
+            };
+
+        var authResponse = await AuthService.Login(ldto);
+        token = await SecureStorage.GetAsync("token");
+        //auth response is successfful?
+        if(token is not null)
         {
-            Email = email,
-            Password = password
-        };
-        AuthService.Login(ldto);
-       
+            NavigationManager.NavigateTo("/dashboard");
+        }
+        else
+        {
+            message = "Hiba!";
+        }
+
+        
     }
 }

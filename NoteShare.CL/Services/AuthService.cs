@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace NoteShare.CL.Services
 {
@@ -12,21 +13,25 @@ namespace NoteShare.CL.Services
     {
         private string _baseUrl = "https://localhost:7183/api/";
         
-        public async Task<AuthResponseDto> Login(LoginDto ldto)
+        public async Task<HttpResponseMessage> Login(LoginDto ldto)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_baseUrl);
 
                 var response = await client.PostAsJsonAsync("Auth/login", ldto);
+                var AuthResponse = JsonConvert.DeserializeObject<LoginResponseDto>(await response.Content.ReadAsStringAsync());
+                var token = AuthResponse.Result.Token;
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadFromJsonAsync<AuthResponseDto>();
-                    return result;
+                    await SecureStorage.SetAsync("token", AuthResponse.Result.Token.ToString());
+
+                    //return AuthResponse
+                    return response;
                 }
                 else
                 {
-                    return null;
+                    return response;
                 }
             }
         }

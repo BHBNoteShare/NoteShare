@@ -10,7 +10,7 @@ namespace NoteShare.CL.Services
     public interface IAuthService
     {
 
-        Task<AuthResponseDto> Login(LoginDto ldto);
+        Task<HttpResponseMessage> Login(LoginDto ldto);
         Task<AuthResponseDto> Register(RegisterDto rdto);
     }
 }
