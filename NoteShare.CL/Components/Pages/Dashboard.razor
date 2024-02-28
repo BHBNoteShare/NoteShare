@@ -1,0 +1,11 @@
+﻿@page "/dashboard"
+<h3>Dashboard @token</h3>
+
+@code {
+    private string token;
+    protected override async Task OnInitializedAsync()
+    {
+        token = await SecureStorage.GetAsync("token");
+    }
+}
+   
