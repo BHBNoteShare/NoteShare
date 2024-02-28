@@ -11,28 +11,28 @@ namespace NoteShare.CL.Services
 {
     internal class AuthService : IAuthService
     {
-        private string _baseUrl = "https://localhost:7183/api/";
-        
-        public async Task<HttpResponseMessage> Login(LoginDto ldto)
+		private readonly HttpClient _httpClient;
+
+		public AuthService(HttpClient httpClient)
+		{
+			_httpClient = httpClient;
+		}
+
+		public async Task<HttpResponseMessage> Login(LoginDto ldto)
         {
-            using (var client = new HttpClient())
+            var response = await _httpClient.PostAsJsonAsync("Auth/login", ldto);
+            var AuthResponse = JsonConvert.DeserializeObject<LoginResponseDto>(await response.Content.ReadAsStringAsync());
+            var token = AuthResponse.Result.Token;
+            if (response.IsSuccessStatusCode)
             {
-                client.BaseAddress = new Uri(_baseUrl);
+                await SecureStorage.SetAsync("token", AuthResponse.Result.Token.ToString());
 
-                var response = await client.PostAsJsonAsync("Auth/login", ldto);
-                var AuthResponse = JsonConvert.DeserializeObject<LoginResponseDto>(await response.Content.ReadAsStringAsync());
-                var token = AuthResponse.Result.Token;
-                if (response.IsSuccessStatusCode)
-                {
-                    await SecureStorage.SetAsync("token", AuthResponse.Result.Token.ToString());
-
-                    //return AuthResponse
-                    return response;
-                }
-                else
-                {
-                    return response;
-                }
+                //return AuthResponse
+                return response;
+            }
+            else
+            {
+                return response;
             }
         }
 

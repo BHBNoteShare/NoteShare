@@ -17,6 +17,7 @@ namespace NoteShare.CL
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<IAuthService, AuthService>();
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7183/api/") });
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();
