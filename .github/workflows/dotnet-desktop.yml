@@ -33,7 +33,7 @@ jobs:
 
       - name: Restore NuGet packages
         run: |
-          run: nuget install BaliFramework.1.0.0.nupkg
+          nuget install BaliFramework.1.0.0.nupkg
           dotnet restore BaliFramework.1.0.0.nupkg
 
       - name: Build project
