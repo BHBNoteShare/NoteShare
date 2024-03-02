@@ -1,15 +1,14 @@
 using AutoWrapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NoteShare.API.Middlewares;
 using NoteShare.Core;
 using NoteShare.Core.Services;
 using NoteShare.Core.Services.Init;
 using NoteShare.Data;
+using BaliFramework.Services;
+using BaliFramework.Middlewares;
 
 namespace NoteShare.API
 {
@@ -28,7 +27,10 @@ namespace NoteShare.API
             builder.Services.AddDbContext<NoteShareDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-                options.EnableSensitiveDataLogging(true);
+                if (builder.Environment.IsDevelopment())
+                {
+                    options.EnableSensitiveDataLogging();
+                }
             });
             builder.Services.Configure<NoteShareConfig>(configuration.GetSection("NoteShareConfig"));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -51,7 +53,7 @@ namespace NoteShare.API
                     };
                 });
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork<NoteShareDbContext>>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IStudentPreferenceService, StudentPreferenceService>();
             builder.Services.AddScoped<ISubjectService, SubjectService>();
@@ -106,8 +108,8 @@ namespace NoteShare.API
 
             using (var scope = app.Services.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
-                scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
+                //scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
+                //scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
             }
 
             app.UseCors(options =>

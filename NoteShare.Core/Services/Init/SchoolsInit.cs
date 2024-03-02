@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NoteShare.Data.Entities;
+using BaliFramework.Services;
 
 namespace NoteShare.Core.Services.Init
 {

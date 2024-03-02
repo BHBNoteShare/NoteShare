@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using BaliFramework.Models;
 using Microsoft.AspNetCore.Mvc;
 using NoteShare.Core.Services;
-using NoteShare.Models;
 using NoteShare.Models.School;
+using NoteShare.Models.Util;
 
 namespace NoteShare.API.Controllers
 {

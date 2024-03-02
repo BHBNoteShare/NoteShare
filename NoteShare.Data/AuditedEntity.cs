@@ -1,4 +1,5 @@
-﻿using NoteShare.Data.Entities;
+﻿using BaliFramework.Database;
+using NoteShare.Data.Entities;
 
 namespace NoteShare.Data
 {

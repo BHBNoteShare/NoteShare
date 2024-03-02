@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NoteShare.Core.Extensions;
+﻿using BaliFramework.Extensions;
+using BaliFramework.Models;
+using BaliFramework.Services;
+using Microsoft.EntityFrameworkCore;
 using NoteShare.Data.Entities;
-using NoteShare.Models;
 using NoteShare.Models.StudentPreferences;
 
 namespace NoteShare.Core.Services
@@ -54,7 +55,7 @@ namespace NoteShare.Core.Services
             var student = await _authService.GetStudent() ?? throw new Exception("Nem található a diák");
             return await _unitOfWork.Context().Set<StudentPreference>()
                 .Include(sp => sp.Preference)
-                .Where(sp => sp.StudentId == student.Id).GetPagedResult(queryParameters?.PageNumber ?? 1, queryParameters?.PageSize ?? 10);
+                .Where(sp => sp.StudentId == student.Id).GetPagedResult<StudentPreference, StudentPreference>(queryParameters?.PageNumber ?? 1, queryParameters?.PageSize ?? 10);
         }
 
         public async Task AddStudentPreference(StudentPreferenceDto studentPreferenceDto, string studentId)

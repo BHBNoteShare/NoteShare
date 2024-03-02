@@ -1,6 +1,8 @@
-﻿using NoteShare.Core.Extensions;
+﻿using BaliFramework.Extensions;
+using BaliFramework.Models;
+using BaliFramework.Services;
 using NoteShare.Data.Entities;
-using NoteShare.Models;
+using NoteShare.Models.Util;
 
 namespace NoteShare.Core.Services
 {
@@ -24,7 +26,7 @@ namespace NoteShare.Core.Services
             {
                 schools = schools.Where(s => s.OM.Contains(queryParameters.SearchText) || s.Name.Contains(queryParameters.SearchText));
             }
-            return await schools.GetPagedResult(queryParameters.PageNumber, queryParameters.PageSize);
+            return await schools.GetPagedResult<School, School>(queryParameters.PageNumber, queryParameters.PageSize);
         }
     }
 }
