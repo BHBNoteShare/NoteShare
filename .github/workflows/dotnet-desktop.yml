@@ -32,7 +32,9 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Restore NuGet packages
-        run: dotnet restore *.nupkg
+        run: |
+          dir /s /b /o:gn
+          dotnet restore BaliFramework.1.0.0.nupkg
 
       - name: Build project
         run: |
