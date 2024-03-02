@@ -1,15 +1,14 @@
 using AutoWrapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NoteShare.API.Middlewares;
 using NoteShare.Core;
 using NoteShare.Core.Services;
 using NoteShare.Core.Services.Init;
 using NoteShare.Data;
+using BaliFramework.Services;
+using BaliFramework.Middlewares;
 
 namespace NoteShare.API
 {
@@ -28,7 +27,10 @@ namespace NoteShare.API
             builder.Services.AddDbContext<NoteShareDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-                options.EnableSensitiveDataLogging(true);
+                if (builder.Environment.IsDevelopment())
+                {
+                    options.EnableSensitiveDataLogging();
+                }
             });
             builder.Services.Configure<NoteShareConfig>(configuration.GetSection("NoteShareConfig"));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -51,11 +53,15 @@ namespace NoteShare.API
                     };
                 });
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork<NoteShareDbContext>>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IStudentPreferenceService, StudentPreferenceService>();
+            builder.Services.AddScoped<ISubjectService, SubjectService>();
+            builder.Services.AddScoped<ISchoolService, SchoolService>();
+
             builder.Services.AddScoped<SubjectsInit>();
             builder.Services.AddScoped<SchoolsInit>();
-
+            #region Swagger
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -91,7 +97,7 @@ namespace NoteShare.API
                     }
                 });
             });
-
+            #endregion
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -99,13 +105,13 @@ namespace NoteShare.API
                 var ctx = scope.ServiceProvider.GetRequiredService<NoteShareDbContext>();
                 ctx.Database.Migrate();
             }
-            
+
             using (var scope = app.Services.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
-                scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
+                //scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
+                //scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
             }
-            
+
             app.UseCors(options =>
             {
                 options.AllowAnyMethod();
