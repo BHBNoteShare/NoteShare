@@ -32,7 +32,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
         
       - name: Restore NuGet packages
-        run: dotnet restore ./*.nupkg
+        run: dotnet restore \*.nupkg
 
       - name: Build project
         run: |
