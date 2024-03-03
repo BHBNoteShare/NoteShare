@@ -36,8 +36,7 @@ jobs:
           choco install nuget.commandline -y
 
       - name: Install NuGet package
-        run: nuget install ./BaliFramework.nuget -Version 1.0.0 -OutputDirectory packages
-
+        run: nuget install BaliFramework.1.0.0.nupkg -OutputDirectory packages
       #- name: Add NuGet package source
        # run: |
         #  dotnet nuget add source ./ -n local-source
