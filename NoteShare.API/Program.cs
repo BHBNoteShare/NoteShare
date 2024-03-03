@@ -9,12 +9,14 @@ using NoteShare.Core.Services.Init;
 using NoteShare.Data;
 using BaliFramework.Services;
 using BaliFramework.Middlewares;
+using Minio.DataModel.Args;
+using Minio;
 
 namespace NoteShare.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,7 @@ namespace NoteShare.API
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("NoteShareConfig.json", optional: false, reloadOnChange: true)
             .Build();
+            builder.Services.Configure<NoteShareConfig>(configuration.GetSection("NoteShareConfig"));
 
             // Add services to the container.
             builder.Services.AddDbContext<NoteShareDbContext>(options =>
@@ -32,7 +35,6 @@ namespace NoteShare.API
                     options.EnableSensitiveDataLogging();
                 }
             });
-            builder.Services.Configure<NoteShareConfig>(configuration.GetSection("NoteShareConfig"));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddCors();
@@ -58,9 +60,24 @@ namespace NoteShare.API
             builder.Services.AddScoped<IStudentPreferenceService, StudentPreferenceService>();
             builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<ISchoolService, SchoolService>();
+            builder.Services.AddScoped<INoteService, NoteService>();
 
             builder.Services.AddScoped<SubjectsInit>();
             builder.Services.AddScoped<SchoolsInit>();
+            #region MinIO
+            var minio = new MinioClient()
+                .WithEndpoint(builder.Configuration.GetConnectionString("MinIO"))
+                    .WithSSL(builder.Configuration.GetSection("MinIOSettings").GetValue<bool>("SSL"))
+                    .WithCredentials(builder.Configuration.GetSection("MinIOSettings")["AccessKey"], builder.Configuration.GetSection("MinIOSettings")["SecretKey"])
+                    .Build();
+            var bucketArgs = new BucketExistsArgs().WithBucket(builder.Configuration.GetSection("MinIOSettings")["BucketName"]);
+            if (!await minio.BucketExistsAsync(bucketArgs))
+            {
+                await minio.MakeBucketAsync(new MakeBucketArgs().WithBucket(builder.Configuration.GetSection("MinIOSettings")["BucketName"]));
+            }
+            builder.Services.AddSingleton(minio);
+            builder.Services.AddScoped<IMinIOService, MinIOService>();
+            #endregion
             #region Swagger
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -98,6 +115,7 @@ namespace NoteShare.API
                 });
             });
             #endregion
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -106,10 +124,13 @@ namespace NoteShare.API
                 ctx.Database.Migrate();
             }
 
-            using (var scope = app.Services.CreateScope())
+            if (builder.Configuration.GetValue<bool>("RunInit"))
             {
-                //scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
-                //scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
+                using (var scope = app.Services.CreateScope())
+                {
+                    scope.ServiceProvider.GetRequiredService<SubjectsInit>().Setup().Wait();
+                    scope.ServiceProvider.GetRequiredService<SchoolsInit>().Setup().Wait();
+                }
             }
 
             app.UseCors(options =>
