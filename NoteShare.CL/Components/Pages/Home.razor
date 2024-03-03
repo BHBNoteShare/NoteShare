@@ -1,6 +1,7 @@
 ﻿@page "/login"
-@inject IAuthService AuthService
-@inject NavigationManager NavigationManager
+@inject IAuthService _AuthService
+@inject NavigationManager _NavigationManager
+@inject ISecureStorageService _SecureStorageService
 
 <div class="outer-div">
     <div class="inner-div">
@@ -41,10 +42,10 @@
     private string token;
     protected override async Task OnInitializedAsync()
     {
-        token = await SecureStorage.GetAsync("token");
+        token = await _SecureStorageService.GetTokenAsync();
         if(token is not null)
         {
-            NavigationManager.NavigateTo("/dashboard");
+            _NavigationManager.NavigateTo("/dashboard");
         }
     }
 
@@ -68,12 +69,12 @@
                 Password = password
             };
 
-        var authResponse = await AuthService.Login(ldto);
-        token = await SecureStorage.GetAsync("token");
+        var authResponse = await _AuthService.Login(ldto);
+        token = await _SecureStorageService.GetTokenAsync();
         //auth response is successfful?
         if(token is not null)
         {
-            NavigationManager.NavigateTo("/dashboard");
+            _NavigationManager.NavigateTo("/dashboard");
         }
         else
         {

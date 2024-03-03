@@ -9,32 +9,45 @@ using Newtonsoft.Json;
 
 namespace NoteShare.CL.Services
 {
+    public interface IAuthService
+    {
+
+        Task<LoginResponseDto> Login(LoginDto ldto);
+        Task<AuthResponseDto> Register(RegisterDto rdto);
+    }
     internal class AuthService : IAuthService
     {
-        private string _baseUrl = "https://localhost:7183/api/";
-        
-        public async Task<HttpResponseMessage> Login(LoginDto ldto)
+		private readonly IAPIService _apiService;
+        private readonly ISecureStorageService _secureStorage;
+
+        public AuthService(IAPIService apiService, ISecureStorageService secureStorage)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(_baseUrl);
-
-                var response = await client.PostAsJsonAsync("Auth/login", ldto);
-                var AuthResponse = JsonConvert.DeserializeObject<LoginResponseDto>(await response.Content.ReadAsStringAsync());
-                var token = AuthResponse.Result.Token;
-                if (response.IsSuccessStatusCode)
-                {
-                    await SecureStorage.SetAsync("token", AuthResponse.Result.Token.ToString());
-
-                    //return AuthResponse
-                    return response;
-                }
-                else
-                {
-                    return response;
-                }
-            }
+            _apiService = apiService;
+            _secureStorage = secureStorage;
         }
+
+		public async Task<LoginResponseDto> Login(LoginDto ldto)
+        {
+            LoginResponseDto lrdto = await _apiService.PostAsync<LoginResponseDto>("Auth/login", ldto);
+            await _secureStorage.SetTokenAsync(lrdto.Result.Token);
+            return lrdto;
+        }
+        /*
+          var response = await _httpClient.PostAsJsonAsync("Auth/login", ldto);
+            var AuthResponse = JsonConvert.DeserializeObject<LoginResponseDto>(await response.Content.ReadAsStringAsync());
+            var token = AuthResponse.Result.Token;
+            if (response.IsSuccessStatusCode)
+            {
+                await SecureStorage.SetAsync("token", AuthResponse.Result.Token.ToString());
+
+                //return AuthResponse
+                return response;
+            }
+            else
+            {
+                return response;
+            }
+         */
 
         public Task<AuthResponseDto> Register(RegisterDto rdto)
         {

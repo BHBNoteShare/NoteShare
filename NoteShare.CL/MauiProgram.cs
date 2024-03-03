@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NoteShare.CL.Services;
 
 namespace NoteShare.CL
@@ -16,10 +17,14 @@ namespace NoteShare.CL
                 });
 
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddSingleton<IAuthService, AuthService>();
+            builder.Configuration.AddJsonFile("appsettings.json");
+            builder.Services.AddScoped<ISecureStorageService, SecureStorageService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IAPIService, APIService>();
+            builder.Services.AddScoped(sp => new HttpClient());
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
