@@ -18,6 +18,7 @@ namespace NoteShare.Data.Entities
     {
         public void Configure(EntityTypeBuilder<Subject> builder)
         {
+            builder.HasQueryFilter(x => !x.Deleted);
         }
     }
 }

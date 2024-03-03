@@ -27,6 +27,7 @@ namespace NoteShare.Data.Entities
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.HasQueryFilter(x => !x.Deleted);
             builder.HasDiscriminator<string>("Discriminator")
                 .HasValue<Teacher>("Teacher")
                 .HasValue<Student>("Student")
