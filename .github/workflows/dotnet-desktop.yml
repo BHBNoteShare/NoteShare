@@ -33,7 +33,7 @@ jobs:
 
       - name: Restore NuGet packages
         run: |
-          dotnet restore ./BaliFramework.1.0.0.nupkg
+          dotnet add package ./BaliFramework.1.0.0.nupkg
          # A NuGet csomag neve (a fájl nevének kivonásával)
          # PACKAGE_NAME=$(basename -s .nupkg $(find . -maxdepth 1 -name '*.nupkg' -print -quit))
 
