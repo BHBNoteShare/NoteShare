@@ -31,13 +31,20 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Add NuGet package source
+      - name: Install NuGet CLI
         run: |
-          dotnet nuget add source ./ -n local-source
+          choco install nuget.commandline -y
 
       - name: Install NuGet package
-        run: |
-          dotnet add package BaliFramework --source local-source --version 1.0.0
+        run: nuget install ./BaliFramework.nuget -Version 1.0.0 -OutputDirectory packages
+
+      #- name: Add NuGet package source
+       # run: |
+        #  dotnet nuget add source ./ -n local-source
+
+      #- name: Install NuGet package
+       # run: |
+        #  dotnet add package BaliFramework --source local-source --version 1.0.0
          # - name: Restore NuGet packages
          #run: |
          #  dotnet add package ./BaliFramework.1.0.0.nupkg
