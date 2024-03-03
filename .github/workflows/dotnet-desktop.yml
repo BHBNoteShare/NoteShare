@@ -31,9 +31,16 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Restore NuGet packages
+      - name: Add NuGet package source
         run: |
-          dotnet add package ./BaliFramework.1.0.0.nupkg
+          dotnet nuget add source ./ -n local-source
+
+      - name: Install NuGet package
+        run: |
+          dotnet add package BaliFramework --source local-source --version 1.0.0
+         # - name: Restore NuGet packages
+         #run: |
+         #  dotnet add package ./BaliFramework.1.0.0.nupkg
          # A NuGet csomag neve (a fájl nevének kivonásával)
          # PACKAGE_NAME=$(basename -s .nupkg $(find . -maxdepth 1 -name '*.nupkg' -print -quit))
 
