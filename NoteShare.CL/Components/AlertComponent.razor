@@ -1,0 +1,38 @@
+﻿@if (IsVisible)
+{
+    <div class="alert @(GetAlertClass())">
+        <button type="button" class="close" @onclick="Close">&times;</button>
+        @Message
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Message { get; set; }
+
+    [Parameter]
+    public string AlertType { get; set; } = "info";
+
+    [Parameter]
+    public bool IsVisible { get; set; } = false;
+
+    private string GetAlertClass()
+    {
+        switch (AlertType.ToLower())
+        {
+            case "success":
+                return "alert-success";
+            case "warning":
+                return "alert-warning";
+            case "error":
+                return "alert-error";
+            default:
+                return "alert-info";
+        }
+    }
+
+    private void Close()
+    {
+        IsVisible = false;
+    }
+}

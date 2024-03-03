@@ -1,5 +1,9 @@
 ﻿@page "/dashboard"
+ @inject IAuthService _AuthService
 <h3>Dashboard @token</h3>
+<AlertComponent Message="Hello world" IsVisible="true" AlertType="success" />
+<AlertComponent Message="Hello world" IsVisible="true" AlertType="info" />
+<AlertComponent Message="Hello world" IsVisible="true" AlertType="warning" />
 
 @code {
     private string token;
@@ -7,5 +11,6 @@
     {
         token = await SecureStorage.GetAsync("token");
     }
+
 }
    

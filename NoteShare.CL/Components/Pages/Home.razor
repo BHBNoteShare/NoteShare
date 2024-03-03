@@ -33,19 +33,25 @@
         </div>
     </div>
 </div>
+<AlertComponent Message=@message AlertType=@alerttype IsVisible=@IsVisible/>
 
 @code{
+
     public string txtType = "password";
     private string password = "";
     private string email = "";
     private string message = "";
     private string token;
+    private string alerttype = "error";
+    private bool IsVisible = false;
+
+
     protected override async Task OnInitializedAsync()
     {
         token = await _SecureStorageService.GetTokenAsync();
         if(token is not null)
         {
-            _NavigationManager.NavigateTo("/dashboard");
+             _NavigationManager.NavigateTo("/dashboard");
         }
     }
 
@@ -61,26 +67,47 @@
         }
     }
 
+
+    // TODO: Login Refaktorálása
     private async Task Login()
     {
+        IsVisible = false;
         LoginDto ldto = new LoginDto
             {
                 Email = email,
                 Password = password
             };
 
-        var authResponse = await _AuthService.Login(ldto);
-        token = await _SecureStorageService.GetTokenAsync();
-        //auth response is successfful?
-        if(token is not null)
+        try
         {
-            _NavigationManager.NavigateTo("/dashboard");
+            var authResponse = await _AuthService.Login(ldto);
+            token = await _SecureStorageService.GetTokenAsync();
+            if (token is not null)
+            {
+                alerttype = "success";
+                message = "Sikeres bejelentkezés.";
+                IsVisible = true;
+                _NavigationManager.NavigateTo("/dashboard");
+            }
+            else
+            {
+                alerttype = "error";
+                message = "Hiba történt a bejelentkezés során, próbálja újra.";
+                IsVisible = true;
+            }
         }
-        else
+        catch (HttpRequestException ex)
         {
-            message = "Hiba!";
+            alerttype = "error";
+            message = "Hiba történt a bejelentkezés során, próbálja újra.";
+            IsVisible = true;
         }
-
-        
+        catch (Exception ex)
+        {
+            alerttype = "error";
+            message = "Váratlan hiba történt, kérem próbálja újra.";
+            IsVisible = true;
+        }
     }
+
 }

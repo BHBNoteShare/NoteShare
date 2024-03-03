@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,12 +24,21 @@ namespace NoteShare.CL.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
+        private readonly ISecureStorageService _secureStorage;
 
-        public APIService(HttpClient httpClient, IConfiguration configuration)
+        public APIService(HttpClient httpClient, IConfiguration configuration, ISecureStorageService secureStorage)
         {
             _httpClient = httpClient;
             _configuration = configuration;
+            _secureStorage = secureStorage;
             _httpClient.BaseAddress = new Uri(_configuration["ApiBaseUrl"]);
+            _secureStorage.GetTokenAsync().ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully)
+                {
+                    // TODO: Implementálni az authorization header beállítását konstruktorban
+                }
+            });
         }
 
         public async Task<T> GetAsync<T>(string endpoint)
@@ -38,7 +49,9 @@ namespace NoteShare.CL.Services
                 return await response.Content.ReadFromJsonAsync<T>();
             }else
             {
-                return default;
+                var statusCode = response.StatusCode;
+                var reasonPhrase = response.ReasonPhrase;
+                throw new HttpRequestException($"HTTP request failed with status code: {(int)statusCode} ({statusCode}) - {reasonPhrase}");
             }
         }
 
@@ -52,8 +65,9 @@ namespace NoteShare.CL.Services
             }
             else
             {
-                // Handle error response
-                return default; // Or throw an exception
+                var statusCode = response.StatusCode;
+                var reasonPhrase = response.ReasonPhrase;
+                throw new HttpRequestException($"HTTP request failed with status code: {(int)statusCode} ({statusCode}) - {reasonPhrase}");
             }
         }
 
@@ -67,7 +81,9 @@ namespace NoteShare.CL.Services
             }
             else
             {
-                return default;// Or throw an exception
+                var statusCode = response.StatusCode;
+                var reasonPhrase = response.ReasonPhrase;
+                throw new HttpRequestException($"HTTP request failed with status code: {(int)statusCode} ({statusCode}) - {reasonPhrase}");
             }
         }
 
@@ -80,7 +96,9 @@ namespace NoteShare.CL.Services
             }
             else
             {
-                return default;
+                var statusCode = response.StatusCode;
+                var reasonPhrase = response.ReasonPhrase;
+                throw new HttpRequestException($"HTTP request failed with status code: {(int)statusCode} ({statusCode}) - {reasonPhrase}");
             }
         }
     }
