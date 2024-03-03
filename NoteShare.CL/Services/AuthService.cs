@@ -26,31 +26,17 @@ namespace NoteShare.CL.Services
             _secureStorage = secureStorage;
         }
 
-		public async Task<LoginResponseDto> Login(LoginDto ldto)
+
+        public async Task<LoginResponseDto> Login(LoginDto ldto)
         {
             LoginResponseDto lrdto = await _apiService.PostAsync<LoginResponseDto>("Auth/login", ldto);
             await _secureStorage.SetTokenAsync(lrdto.Result.Token);
             return lrdto;
         }
-        /*
-          var response = await _httpClient.PostAsJsonAsync("Auth/login", ldto);
-            var AuthResponse = JsonConvert.DeserializeObject<LoginResponseDto>(await response.Content.ReadAsStringAsync());
-            var token = AuthResponse.Result.Token;
-            if (response.IsSuccessStatusCode)
-            {
-                await SecureStorage.SetAsync("token", AuthResponse.Result.Token.ToString());
-
-                //return AuthResponse
-                return response;
-            }
-            else
-            {
-                return response;
-            }
-         */
 
         public Task<AuthResponseDto> Register(RegisterDto rdto)
         {
+            //TODO: Implementálni a Regisztráció metódust
             throw new NotImplementedException();
         }
     }
