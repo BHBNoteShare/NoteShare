@@ -27,6 +27,8 @@ namespace NoteShare.Data.Entities
         {
             return Likes - Dislikes;
         }
+
+        public List<NoteComment> Comments { get; set; }
     }
 
     public class NoteConfiguration : IEntityTypeConfiguration<Note>
@@ -34,13 +36,13 @@ namespace NoteShare.Data.Entities
         public void Configure(EntityTypeBuilder<Note> builder)
         {
             builder.HasQueryFilter(x => !x.Deleted);
-            builder.HasOne(n=>n.CreatedUser)
+            builder.HasOne(n => n.CreatedUser)
                 .WithMany()
-                .HasForeignKey(n=>n.CreatedBy)
+                .HasForeignKey(n => n.CreatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
-            builder.HasOne(n=>n.LastModifiedUser)
+            builder.HasOne(n => n.LastModifiedUser)
                 .WithMany()
-                .HasForeignKey(n=>n.ModifiedBy)
+                .HasForeignKey(n => n.ModifiedBy)
                 .OnDelete(DeleteBehavior.NoAction);
 
         }

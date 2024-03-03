@@ -11,7 +11,6 @@ namespace NoteShare.Data.Entities
         public string FilePath { get; set; }
         public string FileExtension { get; set; }
         public long FileSize { get; set; }
-
         public string NoteId { get; set; }
         public Note Note { get; set; }
     }
