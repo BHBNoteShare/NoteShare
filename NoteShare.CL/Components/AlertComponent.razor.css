@@ -1,4 +1,6 @@
 ﻿
+/* TODO: Színek beállítása az Alertekhez esetlegesen*/
+
 .alert {
     position: fixed;
     bottom: 10px; /* Adjust this value to set the distance from the bottom */
